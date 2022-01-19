@@ -1,72 +1,54 @@
-def mergeLappedAlpha(word):
-	word = list(word)
-	listlen = len(word)
-
-	size = 0
-	i=0
-	
-	while size < listlen: #사ㄱ제도ㅣㄴ 무ㄴ자에 따라 기ㄹ이 유도ㅇ저ㄱ으로 조저ㄹ
-		while i < size:
-			if word[i] == word[i+1]:
-				del word[i]
-				listlen=len(word)
-				
-				size = 0
-				i = 0
-				continue
-			i+=1
-		size+=1
-	return word
-	
-def isGroup(word, mergedword):
-	wordset = list(set(word))
-	
-	setlen = len(wordset)
-	mergedlen = len(mergedword)
-	
-	i=0
-	j=0
-	
-	while i<setlen:
-		while j<mergedlen:
-			if wordset[i] == mergedword[j]:
-				del wordset[i]
-				del mergedword[j]
-				
-				setlen = len(wordset)
-				mergedlen = len(mergedword)
-				
-				#print(wordset)
-				#print(mergedword)
-				
-				if setlen == 0:
-					break
-					
-				
-				
-				i=0
-				j=0
-				
-				continue
-			j+=1
-		i+=1
-	if len(mergedword)>0:
-		print(False)
-		return False
-	elif len(mergedword) == 0:
-		print(True)
-		return True
-
-testcase = int(input())
+t_case = int(input())
 
 cnt = 0
+word_in = []
 
-for i in range(testcase):
-	word = input()
-	word = word.upper()
-	
-	merged = mergeLappedAlpha(word)
-	if isGroup(word, merged) == True:
-		cnt+=1
-		
+last_w = ''
+shown_w = []
+
+is_group = True
+
+for _ in range(t_case):
+        word_in.append(input())
+
+for word in word_in:
+        #다른 단어 검사전 변수 초기화
+        is_group = True
+        shown_w = []
+        
+        print("\nsearching in "+word)
+        
+        # 각 자리 알파뱃 비교
+        for ch in word:
+                
+                # 직전 알파뱃과 현재 알파뱃 미일치
+                if last_w != ch:
+
+                        # 전에 있던 값이 존재할때(0이 아닐때) 그룹단어 아님
+                        if shown_w.count(ch) != 0:
+                                print("not group word")
+                                print(ch+" is shown")
+                                is_group = False
+                                break
+                                
+
+                        # 미존재시 직전단어 변경, 전에 있던 값에 추가
+                        else:
+                                print(ch+" is not in list. adding")
+                                last_w = ch
+                                shown_w.append(ch)
+                        print("still searching "+word)
+
+        # 그룹 단어일때 카운트 증가
+        if is_group == True:
+                print(word+" is group word")
+                cnt+=1
+        
+
 print(cnt)
+                
+                        
+                        
+                        
+
+
